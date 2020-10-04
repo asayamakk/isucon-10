@@ -2,6 +2,7 @@ require 'sinatra'
 require 'mysql2'
 require 'mysql2-cs-bind'
 require 'csv'
+require 'pathname'
 
 class App < Sinatra::Base
   LIMIT = 20
@@ -101,7 +102,7 @@ class App < Sinatra::Base
   end
 
   post '/initialize' do
-    sql_dir = Pathname.new('../mysql/db')
+    sql_dir = ::Pathname.new('../mysql/db')
     %w[0_Schema.sql 1_DummyEstateData.sql 2_DummyChairData.sql].each do |sql|
       sql_path = sql_dir.join(sql)
       cmd = ['mysql', '-h', db_info[:host], '-u', db_info[:username], "-p#{db_info[:password]}", '-P', db_info[:port], db_info[:database]]
