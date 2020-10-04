@@ -9,6 +9,8 @@ class App < Sinatra::Base
   NAZOTTE_LIMIT = 50
   CHAIR_SEARCH_CONDITION = JSON.parse(File.read('../fixture/chair_condition.json'), symbolize_names: true)
   ESTATE_SEARCH_CONDITION = JSON.parse(File.read('../fixture/estate_condition.json'), symbolize_names: true)
+  BOT_AGENT_LIST = [
+  ]
 
   configure :development do
     require 'sinatra/reloader'
@@ -99,6 +101,10 @@ class App < Sinatra::Base
       logger.error "Failed to parse body: #{e.inspect}"
       halt 400
     end
+  end
+
+  before do
+    ua = request.user_agent
   end
 
   post '/initialize' do
