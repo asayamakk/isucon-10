@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'newrelic_rpm'
 require 'mysql2'
 require 'mysql2-cs-bind'
 require 'csv'
