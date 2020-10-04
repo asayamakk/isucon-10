@@ -10,6 +10,7 @@ class App < Sinatra::Base
   CHAIR_SEARCH_CONDITION = JSON.parse(File.read('../fixture/chair_condition.json'), symbolize_names: true)
   ESTATE_SEARCH_CONDITION = JSON.parse(File.read('../fixture/estate_condition.json'), symbolize_names: true)
   BOT_AGENT_LIST = [
+    /ISUCONbot(-Mobile)?/, /ISUCONbot-Image\//, /Mediapartners-ISUCON/, /ISUCONCoffee/, /ISUCONFeedSeeker(Beta)?/, /crawler \(https:\/\/isucon\.invalid\/(support\/faq\/|help\/jp\/)/, /isubot/, /Isupider/, /Isupider(-image)?\+/, /(bot|crawler|spider)(?:[-_ .\/;@()]|$)/i
   ]
 
   configure :development do
@@ -105,6 +106,9 @@ class App < Sinatra::Base
 
   before do
     ua = request.user_agent
+    if BOT_AGENT_LIST.any? {|bot_regex| bot_regex.match? ua}
+      halt 503
+    end
   end
 
   post '/initialize' do
